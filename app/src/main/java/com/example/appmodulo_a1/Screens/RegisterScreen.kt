@@ -17,11 +17,11 @@ import com.example.appmodulo_a1.User
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
-    onRegister: () -> Unit, onBack: () -> Unit
+    initialData: User, onRegister: (User) -> Unit, onBack: () -> Unit
 ) {
-    var login by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var login by remember { mutableStateOf(initialData.login) }
+    var email by remember { mutableStateOf(initialData.email) }
+    var password by remember { mutableStateOf(initialData.password) }
     var passwordVisible by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -70,9 +70,7 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
-                    val newUser = User(login = login, email = email, password = password)
-                    println("Зарегистрирован: $newUser")
-                    onRegister()
+                    onRegister(User(login, email, password))
                 }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Создать аккаунт")

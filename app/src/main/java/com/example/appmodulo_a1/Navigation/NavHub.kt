@@ -3,70 +3,77 @@ package com.example.appmodulo_a1.Navigation
 import com.example.appmodulo_a1.Screens.Screens
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.example.appmodulo_a1.currentUser
+import com.example.app1.models.MainViewModel
 import com.example.appmodulo_a1.Screens.CartScreen
 import com.example.appmodulo_a1.Screens.CatalogScreen
 import com.example.appmodulo_a1.Screens.DetailScreen
 import com.example.appmodulo_a1.Screens.LoginScreen
 import com.example.appmodulo_a1.Screens.ProfileScreen
 import com.example.appmodulo_a1.Screens.RegisterScreen
+import com.example.appmodulo_a1.User
 
 @Composable
-fun NavHub() {
-    val nav = remember { NavigationController() }
+fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
+//    val nav = remember { NavigationController() }
+    val screen: Screens = navCtrl.currentScreen
 
-    when (nav.currentScreen) {
+    when (screen) {
 
         Screens.LoginScreen -> LoginScreen(
+            data = viewModel.userData,
             onLogin = {
-                nav.navigateTo(Screens.CatalogScreen)
+                navCtrl.navigateTo(Screens.CatalogScreen)
             },
             onGoToRegister = {
-                nav.navigateTo(Screens.RegisterScreen)
+                navCtrl.navigateTo(Screens.RegisterScreen)
+            },
+            login = { email, pass ->
+                viewModel.login(email, pass)
             }
         )
 
         Screens.RegisterScreen -> RegisterScreen(
+            initialData = viewModel.userData,
             onRegister = {
-                nav.navigateTo(Screens.CatalogScreen)
+                navCtrl.navigateTo(Screens.LoginScreen)
             },
             onBack = {
-                nav.navigateBack()
+                navCtrl.navigateBack()
             }
         )
 
         Screens.CatalogScreen -> CatalogScreen(
             onProductClick = { product ->
-                nav.selectedProduct = product
-                nav.navigateTo(Screens.DetailScreen)
+                navCtrl.selectedProduct = product
+                navCtrl.navigateTo(Screens.DetailScreen)
             },
-            onGoCart = { nav.navigateTo(Screens.CartScreen) },
-            onGoProfile = { nav.navigateTo(Screens.ProfileScreen) }
+            onGoCart = { navCtrl.navigateTo(Screens.CartScreen) },
+            onGoProfile = { navCtrl.navigateTo(Screens.ProfileScreen) }
         )
 
         Screens.DetailScreen -> DetailScreen(
-            product = nav.selectedProduct!!,
-            onAddToCart = { nav.navigateTo(Screens.CartScreen) },
-            onBack = { nav.navigateBack() }
+            product = navCtrl.selectedProduct!!,
+            onAddToCart = { navCtrl.navigateTo(Screens.CartScreen) },
+            onBack = { navCtrl.navigateBack() }
         )
 
 
         Screens.CartScreen -> CartScreen(
             onGoToCatalog = {
-                nav.navigateTo(Screens.CatalogScreen)
+                navCtrl.navigateTo(Screens.CatalogScreen)
             },
             onBack = {
-                nav.navigateBack()
+                navCtrl.navigateBack()
             }
         )
 
         Screens.ProfileScreen -> ProfileScreen(
-            user = currentUser,
+            user = viewModel.loadData(),
             onLogout = {
-                nav.navigateTo(Screens.LoginScreen)
+                navCtrl.navigateTo(Screens.LoginScreen)
             },
             onBack = {
-                nav.navigateBack()
+                navCtrl.navigateBack()
             }
         )
     }
