@@ -1,7 +1,12 @@
 package com.example.appmodulo_a1.Screens
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -9,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.appmodulo_a1.EmailValidator
 import com.example.appmodulo_a1.User
 import kotlin.math.log
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
 //    data: User,
@@ -21,6 +28,20 @@ fun LoginScreen(
     onGoToRegister: () -> Unit,
     login: (String, String) -> Boolean
 ) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "Авторизация", style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
+            )
+        }
+    ) { padding ->
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -31,86 +52,109 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(padding)
+            .background(Color(0xFFE5E5EA))
+//            .padding(24.dp)
+        ,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Авторизация", style = MaterialTheme.typography.headlineMedium)
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+//                .padding(16.dp)
+            ,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Column() {
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { newEmail ->
+                        email = newEmail
+
+                        // почта тексеру
+                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
+                    },
+                    label = { Text("Почта") },
+                    modifier = Modifier.fillMaxWidth(),
+
+                    isError = errorEmail,
+
+                    supportingText = {
+                        if (errorEmail) {
+                            Text("Введите корректную почту")
+                        }
+                    }
+                )
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Пароль") },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+//                Row(verticalAlignment = Alignment.CenterVertically) {
+//                    Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
+//                    Text("Показать пароль")
+//
+//                }
+
+
+
+            }
+        }
 
         //Сактау тексеру
 //        Text("Saved: ${data.email} ${data.password}")
 //        Text("Input: $email $password")
 
-        Spacer(modifier = Modifier.height(32.dp))
 
-//        OutlinedTextField(
-//            value = email,
-//            onValueChange = { email = it },
-//            label = { Text("Email") },
-//            modifier = Modifier.fillMaxWidth()
-//        )
 
-        OutlinedTextField(
-            value = email,
-            onValueChange = { newEmail ->
-                email = newEmail
+//        Spacer(modifier = Modifier.height(32.dp))
 
-                // почта тексеру
-                errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
-            },
-            label = { Text("Почта") },
-            modifier = Modifier.fillMaxWidth(),
 
-            isError = errorEmail,
-            supportingText = {
-                if (errorEmail) {
-                    Text("Введите корректную почту")
-                }
+        Column(modifier = Modifier.padding(horizontal = 16.dp)){
+
+            if (errorTextVisibility) {
+                Text("Заполните все поля", color = Color.Red)
             }
-        )
 
-//        Spacer(modifier = Modifier.height(12.dp))
+//            if (errorTextVisibility) {
+//                Text("Заполните все поля", color = Color.Red)
+//            } else if (errorEmail) {
+//                Text("Введите корректную почту")
+//            }
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Пароль") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
-            Text("Показать пароль")
+            Button(
+                onClick = {
+                    if (email.isNotEmpty() && password.isNotEmpty() && login(email, password))
+                        onLogin()
+                    else {
+                        errorTextVisibility = true
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                Text("Войти")
+            }
 
-        }
+            Spacer(modifier = Modifier.height(12.dp))
 
-        if (errorTextVisibility) {
-//            Text("Неверные данные для авторизация!", color = Color.Red)
-            Text("Заполните все поля", color = Color.Red)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                if (email.isNotEmpty() && password.isNotEmpty() && login(email, password))
-                    onLogin()
-                else {
-                    errorTextVisibility = true
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Войти")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedButton(
-            onClick = onGoToRegister,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Зарегистрироваться")
+            Button(
+                onClick = onGoToRegister,
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                Text("Зарегистрироваться")
+            }
         }
     }
+}
 }

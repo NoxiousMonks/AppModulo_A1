@@ -1,5 +1,6 @@
 package com.example.appmodulo_a1.Screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.Product
@@ -32,27 +34,11 @@ fun CatalogScreen(
     var searching by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-
-                title = {
-                    Text("Каталог")
-                },
-                actions = {
-//                    Icon(Icons.Default.Search, contentDescription = "Поиск")
-                    OutlinedTextField(
-                        value = searching,
-                        onValueChange = { searching = it },
-                        label = { Text("Поиск") },
-                        modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
-                        shape = MaterialTheme.shapes.large,
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Поиск") }
-                    )
-                },
-                )
-        },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ) {
                 NavigationBarItem(
                     selected = true,
                     onClick = {},
@@ -74,23 +60,33 @@ fun CatalogScreen(
             }
         }
     ) { padding ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+//                .padding(10.dp)
                 .verticalScroll(rememberScrollState())
+                .background(Color(0xFFE5E5EA)),
         ) {
+            OutlinedTextField(
+                value = searching,
+                onValueChange = { searching = it },
+                label = { Text("Поиск") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
+                shape = MaterialTheme.shapes.large,
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Поиск") }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             for (product in sampleProducts) {
-                ProductCard(
-                    product = product,
-                    onClick = { onProductClick(product) }
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+                    ProductCard(
+                        product = product,
+                        onClick = { onProductClick(product) }
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
@@ -101,20 +97,22 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp),
-                color = Color.Gray,
+                color = Color.LightGray,
             ) {}
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(product.name)
-            Text(product.description)
+            Text(product.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(product.description, color = Color.Gray)
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.appmodulo_a1.Screens
 
 
+import androidx.annotation.ColorInt
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.icons.Icons
@@ -35,7 +37,11 @@ fun RegisterScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Регистрация") }, navigationIcon = {
+            TopAppBar(title = { Text(
+                "Регистрация",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            ) }, navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
                 }
@@ -45,66 +51,76 @@ fun RegisterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(24.dp),
+                .background(Color(0xFFE5E5EA)),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedTextField(
-                value = login,
-                onValueChange = { login = it },
-                label = { Text("Логин") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                OutlinedTextField(
+                    value = login,
+                    onValueChange = { login = it },
+                    label = { Text("Логин") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = email,
-                onValueChange = { newEmail ->
-                    email = newEmail
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { newEmail ->
+                        email = newEmail
 
-                    // почта тексеру
-                    errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
-                },
-                label = { Text("Почта") },
-                modifier = Modifier.fillMaxWidth(),
+                        // почта тексеру
+                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
+                    },
+                    label = { Text("Почта") },
+                    modifier = Modifier.fillMaxWidth(),
 
-                isError = errorEmail,
-                supportingText = {
-                    if (errorEmail) {
-                        Text("Введите корректную почту")
+                    isError = errorEmail,
+                    supportingText = {
+                        if (errorEmail) {
+                            Text("Введите корректную почту")
+                        }
                     }
+                )
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Пароль") },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
+                    Text("Показать пароль")
                 }
-            )
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Пароль") },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
-                Text("Показать пароль")
             }
-
             if (errorTextVisibility) {
                 Text("Заполните все поля!", color = Color.Red)
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Button(
-                onClick = {
-                    if (!errorEmail && email.isNotEmpty() && login.isNotEmpty() && password.isNotEmpty()){
+            Column(modifier = Modifier.padding(all = 16.dp)){
+                Button(
+                    onClick = {
+                        if (!errorEmail && email.isNotEmpty() && login.isNotEmpty() && password.isNotEmpty()) {
 
-                        onRegister(User(login, email, password))
-                    } else {
-                        errorTextVisibility = true
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Создать аккаунт")
+                            onRegister(User(login, email, password))
+                        } else {
+                            errorTextVisibility = true
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.small,
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
+                    Text("Создать аккаунт")
+                }
             }
 
         }

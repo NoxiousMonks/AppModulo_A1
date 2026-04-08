@@ -1,5 +1,6 @@
 package com.example.appmodulo_a1.Screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.User
@@ -26,7 +28,14 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Профиль") },
+
+                title = {
+                    Text(
+                        "Профиль",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
@@ -35,7 +44,10 @@ fun ProfileScreen(
             )
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ) {
                 NavigationBarItem(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.CatalogScreen) },
@@ -50,7 +62,7 @@ fun ProfileScreen(
                 )
                 NavigationBarItem(
                     selected = true,
-                    onClick = {  },
+                    onClick = { },
                     label = { Text("Профиль") },
                     icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") }
                 )
@@ -60,12 +72,21 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color(0xFFF2F1EF))
                 .padding(padding)
-                .padding(24.dp),
+//                .padding(24.dp)
+            ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
+
+
+            Icon(
+                Icons.Default.AccountCircle, contentDescription = "profile",
+                modifier = Modifier.size(100.dp)
+            )
+
 
             Text(user.login, style = MaterialTheme.typography.headlineSmall)
 
@@ -77,8 +98,15 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            TextButton(onClick = onLogout) {
-                Text("Выйти", color = Color.Red)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                TextButton(onClick = onLogout) {
+                    Text("Выйти", color = Color.Red)
+                }
             }
         }
     }

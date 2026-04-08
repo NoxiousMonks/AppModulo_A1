@@ -19,6 +19,10 @@ class NavigationController {
 
     var selectedProduct by mutableStateOf<Product?>(null)
 
+    fun addToCart(product: Product){
+
+    }
+
     fun navigateTo(screen: Screens) {
         navStack.add(screen)
     }

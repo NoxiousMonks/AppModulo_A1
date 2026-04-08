@@ -1,15 +1,21 @@
 package com.example.appmodulo_a1.Screens
 
+import android.R
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.appmodulo_a1.Navigation.NavigationController
 
@@ -21,8 +27,23 @@ fun CartScreen(
     navCtrl: NavigationController
 ) {
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "Корзина",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                        )
+                },
+                )
+        },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ) {
                 NavigationBarItem(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.CatalogScreen) },
@@ -31,7 +52,7 @@ fun CartScreen(
                 )
                 NavigationBarItem(
                     selected = true,
-                    onClick = {  },
+                    onClick = { },
                     label = { Text("Корзина") },
                     icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") }
                 )
@@ -45,17 +66,34 @@ fun CartScreen(
         }
     ) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFF2F1EF))
+                .padding(padding),
             contentAlignment = Alignment.Center
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("Корзина пока пустая")
+
+                Text(
+                    "В вашей корзине \n" +
+                            "      пока пусто",
+//                    "В вашей корзине",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+//                Text(
+//                    "пока пусто",
+//                    fontWeight = FontWeight.Bold,
+//                    style = MaterialTheme.typography.headlineMedium
+//                )
+
+                Text("Добавьте товары из каталога", color = Color.Gray)
 
                 Button(onClick = onGoToCatalog) {
-                    Text("В каталог")
+                    Text("Перейти к каталогу")
                 }
             }
         }
