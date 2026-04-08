@@ -23,14 +23,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var userData by mutableStateOf(User())
 
-//    fun login(email:String, pass:String) =  email.contentEquals(userData.email) && pass.contentEquals(userData.pass)
-
-//    var loginError by mutableStateOf(false)
-//
-//    fun login(email: String, password: String) {
-//        loginError = !(email == userData.email && password == userData.password)
-//    }
-
     fun login(email:String, pass:String): Boolean {
         return email.contentEquals(userData.email) && pass.contentEquals(userData.password)
     }

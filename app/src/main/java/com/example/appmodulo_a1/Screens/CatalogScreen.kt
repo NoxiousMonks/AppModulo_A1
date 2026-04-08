@@ -6,11 +6,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.Product
 import com.example.appmodulo_a1.sampleProducts
 
@@ -19,21 +26,52 @@ import com.example.appmodulo_a1.sampleProducts
 fun CatalogScreen(
     onProductClick: (Product) -> Unit,
     onGoCart: () -> Unit,
-    onGoProfile: () -> Unit
+    onGoProfile: () -> Unit,
+    navCtrl: NavigationController
 ) {
+    var searching by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopAppBar(
+
                 title = {
                     Text("Каталог")
                 },
                 actions = {
-                    IconButton(onClick = { onGoProfile() }) {
-                        Icon(Icons.Default.AccountCircle, contentDescription = "Аккаунт")
-                    }
+//                    Icon(Icons.Default.Search, contentDescription = "Поиск")
+                    OutlinedTextField(
+                        value = searching,
+                        onValueChange = { searching = it },
+                        label = { Text("Поиск") },
+                        modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
+                        shape = MaterialTheme.shapes.large,
+                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Поиск") }
+                    )
                 },
                 )
+        },
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = true,
+                    onClick = {},
+                    label = { Text("Каталог") },
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { navCtrl.navigateTo(Screens.CartScreen) },
+                    label = { Text("Корзина") },
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { navCtrl.navigateTo(Screens.ProfileScreen) },
+                    label = { Text("Профиль") },
+                    icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") }
+                )
+            }
         }
     ) { padding ->
 

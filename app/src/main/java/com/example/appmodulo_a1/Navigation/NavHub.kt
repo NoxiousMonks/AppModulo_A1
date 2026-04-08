@@ -20,7 +20,7 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
     when (screen) {
 
         Screens.LoginScreen -> LoginScreen(
-            data = viewModel.userData,
+//            data = viewModel.userData,
             onLogin = {
                 navCtrl.navigateTo(Screens.CatalogScreen)
             },
@@ -33,9 +33,11 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
         )
 
         Screens.RegisterScreen -> RegisterScreen(
-            initialData = viewModel.userData,
-            onRegister = {
-                navCtrl.navigateTo(Screens.LoginScreen)
+//            initialData = viewModel.userData,
+            onRegister = { newUser ->
+                viewModel.saveData(newUser)
+//                viewModel.userData = newUser
+                navCtrl.navigateTo(Screens.CatalogScreen)
             },
             onBack = {
                 navCtrl.navigateBack()
@@ -48,7 +50,8 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
                 navCtrl.navigateTo(Screens.DetailScreen)
             },
             onGoCart = { navCtrl.navigateTo(Screens.CartScreen) },
-            onGoProfile = { navCtrl.navigateTo(Screens.ProfileScreen) }
+            onGoProfile = { navCtrl.navigateTo(Screens.ProfileScreen) },
+            navCtrl = navCtrl
         )
 
         Screens.DetailScreen -> DetailScreen(
@@ -64,7 +67,8 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
             },
             onBack = {
                 navCtrl.navigateBack()
-            }
+            },
+            navCtrl = navCtrl
         )
 
         Screens.ProfileScreen -> ProfileScreen(
@@ -74,7 +78,8 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
             },
             onBack = {
                 navCtrl.navigateBack()
-            }
+            },
+            navCtrl = navCtrl
         )
     }
 }

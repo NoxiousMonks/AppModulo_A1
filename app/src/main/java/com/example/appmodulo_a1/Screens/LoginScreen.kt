@@ -10,21 +10,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.appmodulo_a1.EmailValidator
 import com.example.appmodulo_a1.User
 import kotlin.math.log
 
 @Composable
 fun LoginScreen(
-    data: User,
+//    data: User,
     onLogin: () -> Unit,
     onGoToRegister: () -> Unit,
     login: (String, String) -> Boolean
 ) {
-    var email    by remember { mutableStateOf(data.email) }
-    var password by remember { mutableStateOf(data.password) }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    var error by remember { mutableStateOf(false) }
+    var errorEmail by remember { mutableStateOf(false) }
+    var errorTextVisibility by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -34,16 +36,39 @@ fun LoginScreen(
     ) {
         Text("Авторизация", style = MaterialTheme.typography.headlineMedium)
 
+        //Сактау тексеру
+//        Text("Saved: ${data.email} ${data.password}")
+//        Text("Input: $email $password")
+
         Spacer(modifier = Modifier.height(32.dp))
+
+//        OutlinedTextField(
+//            value = email,
+//            onValueChange = { email = it },
+//            label = { Text("Email") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
 
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = { newEmail ->
+                email = newEmail
+
+                // почта тексеру
+                errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
+            },
+            label = { Text("Почта") },
+            modifier = Modifier.fillMaxWidth(),
+
+            isError = errorEmail,
+            supportingText = {
+                if (errorEmail) {
+                    Text("Введите корректную почту")
+                }
+            }
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+//        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextField(
             value = password,
@@ -56,28 +81,27 @@ fun LoginScreen(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
             Text("Показать пароль")
+
         }
+
+        if (errorTextVisibility) {
+//            Text("Неверные данные для авторизация!", color = Color.Red)
+            Text("Заполните все поля", color = Color.Red)
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = {
-            if (login(email, password))
-                onLogin()
-            else {
-                error = true
-            }
-
-//            val authTrue = login(email, password)
-//            error = !authTrue
-//            if (authTrue) onLogin()
-
-        },
+        Button(
+            onClick = {
+                if (email.isNotEmpty() && password.isNotEmpty() && login(email, password))
+                    onLogin()
+                else {
+                    errorTextVisibility = true
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Войти")
-        }
-
-        if (error) {
-            Text("Неправильные данные", color = Color.Red)
         }
 
         Spacer(modifier = Modifier.height(8.dp))

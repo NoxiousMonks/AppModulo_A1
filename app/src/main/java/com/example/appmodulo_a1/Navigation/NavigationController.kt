@@ -13,6 +13,7 @@ class NavigationController {
 
     private val navStack = mutableStateListOf<Screens>(Screens.LoginScreen)
 
+
     val currentScreen: Screens
         get() = navStack.last()
 
