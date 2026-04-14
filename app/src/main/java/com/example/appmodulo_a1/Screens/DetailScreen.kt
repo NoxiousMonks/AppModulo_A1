@@ -1,8 +1,6 @@
 package com.example.appmodulo_a1.Screens
 
-import android.R
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -11,12 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.appmodulo_a1.ImageSlider
+import com.example.appmodulo_a1.ui.theme.ImageSlider
 import com.example.appmodulo_a1.Product
-import com.example.appmodulo_a1.images
+//import com.example.appmodulo_a1.images
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +36,7 @@ fun DetailScreen(
                     .fillMaxWidth()
                     .height(450.dp),
             ) {
-                ImageSlider(images)
+                ImageSlider(product.image)
             }
 
             OutlinedIconButton(

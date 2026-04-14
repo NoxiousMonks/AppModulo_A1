@@ -2,7 +2,6 @@ package com.example.appmodulo_a1.Navigation
 
 import com.example.appmodulo_a1.Screens.Screens
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import com.example.app1.models.MainViewModel
 import com.example.appmodulo_a1.Screens.CartScreen
 import com.example.appmodulo_a1.Screens.CatalogScreen
@@ -10,7 +9,6 @@ import com.example.appmodulo_a1.Screens.DetailScreen
 import com.example.appmodulo_a1.Screens.LoginScreen
 import com.example.appmodulo_a1.Screens.ProfileScreen
 import com.example.appmodulo_a1.Screens.RegisterScreen
-import com.example.appmodulo_a1.User
 
 @Composable
 fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
@@ -21,10 +19,10 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
 
         Screens.LoginScreen -> LoginScreen(
 //            data = viewModel.userData,
-            onLogin = {
+            navigateToLogin = {
                 navCtrl.navigateTo(Screens.CatalogScreen)
             },
-            onGoToRegister = {
+            navigateToRegister = {
                 navCtrl.navigateTo(Screens.RegisterScreen)
             },
             login = { email, pass ->

@@ -87,8 +87,10 @@ fun ProfileScreen(
                     label = { Text("Профиль") },
                     icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF6149FF),
-                        selectedTextColor = Color(0xFF6149FF)
+                        selectedIconColor =  MaterialTheme.colorScheme.primary,
+                        selectedTextColor =  MaterialTheme.colorScheme.primary,
+                        indicatorColor  = Color.Transparent
+
                     )
 
                 )

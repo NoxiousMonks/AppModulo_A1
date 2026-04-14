@@ -3,12 +3,17 @@ package com.example.appmodulo_a1.Screens
 
 import androidx.annotation.ColorInt
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +39,11 @@ fun RegisterScreen(
     var errorEmail by remember { mutableStateOf(false) }
     var errorTextVisibility by remember { mutableStateOf(false) }
 
+    var error = if (errorTextVisibility) "Заполните все поля"
+    else if(errorEmail) "Введите корректную почту"
+    else ""
+
+
 
     Scaffold(
         topBar = {
@@ -55,20 +65,23 @@ fun RegisterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Color(0xFFE5E5EA)),
+                .background(Color(0xFFF3F3F3)),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Card(
+            Spacer(modifier = Modifier.height(20.dp))
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(4.dp)
+                    .fillMaxWidth()
+                    .background(Color.White)
             ) {
                 OutlinedTextField(
                     value = login,
                     onValueChange = { login = it },
                     label = { Text("Логин") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(width = 1.dp, color = Color.Transparent),
+//                    colors = TextFieldDefaults.colors()
                 )
 
                 OutlinedTextField(
@@ -82,30 +95,59 @@ fun RegisterScreen(
                     label = { Text("Почта") },
                     modifier = Modifier.fillMaxWidth(),
 
-                    isError = errorEmail,
-                    supportingText = {
-                        if (errorEmail) {
-                            Text("Введите корректную почту")
+//                    isError = errorEmail,
+//                    supportingText = {
+//                        if (errorEmail) {
+//                            Text("Введите корректную почту")
+//                        }
+//                    }
+                )
+
+                Box(contentAlignment = Alignment.BottomEnd){
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Пароль") },
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}) {
+                        if (passwordVisible){
+                            Icon(imageVector = Icons.Filled.Visibility, contentDescription = null)
+                        } else {
+                            Icon(imageVector = Icons.Filled.VisibilityOff, contentDescription = null)
                         }
                     }
-                )
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Пароль") },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
-                    Text("Показать пароль")
                 }
+
+
+//                Row(verticalAlignment = Alignment.CenterVertically) {
+//                    Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
+//                    Text("Показать пароль")
+//                }
+
+
+                if (email.isEmpty() && password.isEmpty()) {
+                    errorTextVisibility = true
+                } else {
+                    errorTextVisibility = false
+                }
+
+                if (email.isNotEmpty() && !EmailValidator.isValidEmail(email)) {
+                    errorEmail = true
+                } else {
+                    errorEmail = false
+                }
+
+
+                Text(error, color = Color.Red)
+
             }
-            if (errorTextVisibility) {
-                Text("Заполните все поля!", color = Color.Red)
-            }
+//            if (errorTextVisibility) {
+//                Text("Заполните все поля!", color = Color.Red)
+//            }
 
             Spacer(modifier = Modifier.weight(1f))
 

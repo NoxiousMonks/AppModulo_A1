@@ -100,8 +100,9 @@ fun CartScreen(
                     label = { Text("Корзина") },
                     icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF6149FF),
-                        selectedTextColor = Color(0xFF6149FF)
+                        selectedIconColor =  MaterialTheme.colorScheme.primary,
+                        selectedTextColor =  MaterialTheme.colorScheme.primary,
+                        indicatorColor  = Color.Transparent
                     )
                 )
                 NavigationBarItem(
@@ -153,7 +154,6 @@ fun CartScreen(
                     }
                 }
             } else {
-                // 🔹 Список
                 Column(modifier = Modifier.fillMaxSize()) {
                     LazyColumn(
                         modifier = Modifier
@@ -193,6 +193,7 @@ fun CartScreen(
                                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
+//                                        bOX CLICKABLE
                                         Button(
                                             onClick = {
                                                 navCtrl.decreaseQuantity(item.product)

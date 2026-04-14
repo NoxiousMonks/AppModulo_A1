@@ -1,13 +1,16 @@
 package com.example.appmodulo_a1.Screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
@@ -17,13 +20,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.appmodulo_a1.ImageSlider
+import com.example.appmodulo_a1.ui.theme.ImageSlider
 import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.Product
-import com.example.appmodulo_a1.images
+import com.example.appmodulo_a1.R
+//import com.example.appmodulo_a1.images
+import com.example.appmodulo_a1.images1
+import com.example.appmodulo_a1.images2
 import com.example.appmodulo_a1.sampleProducts
+import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,10 +54,14 @@ fun CatalogScreen(
                     selected = true,
                     onClick = {},
                     label = { Text("Каталог") },
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") },
+                    icon = {
+//                        Image(painter = painterResource(R.drawable.icon_catalogue), contentDescription = "Каталог") ,
+                           Icon(painter = painterResource(R.drawable.icon_catalogue), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                           },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF6149FF),
-                        selectedTextColor = Color(0xFF6149FF)
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        selectedTextColor =  MaterialTheme.colorScheme.primary,
+                        indicatorColor  = Color.Transparent
                     )
                 )
                 NavigationBarItem(
@@ -57,8 +70,8 @@ fun CatalogScreen(
                     label = { Text("Корзина") },
                     icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF6149FF),
-                        selectedTextColor = Color(0xFF6149FF)
+                        selectedIconColor =  MaterialTheme.colorScheme.primary,
+                        selectedTextColor =  MaterialTheme.colorScheme.primary,
                     )
 
                 )
@@ -68,8 +81,8 @@ fun CatalogScreen(
                     label = { Text("Профиль") },
                     icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFF6149FF),
-                        selectedTextColor = Color(0xFF6149FF)
+                        selectedIconColor =  MaterialTheme.colorScheme.primary,
+                        selectedTextColor =  MaterialTheme.colorScheme.primary
                     )
 
                 )
@@ -124,6 +137,25 @@ fun CatalogScreen(
                 }
             }
 
+//            LazyVerticalGrid(
+//                columns = GridCells.Fixed(2),
+//                modifier = Modifier.fillMaxSize()
+//                    .padding(horizontal = 10.dp),
+//                horizontalArrangement = Arrangement.spacedBy(12.dp),
+//                verticalArrangement = Arrangement.spacedBy(12.dp)
+////                verticalItemSpacing = 12.dp
+//            ) {
+//                items(
+//                    items = sampleProducts,
+//                    key = { it.id }
+//                ) { product ->
+//                    ProductCard(
+//                        product,
+//                        onClick = { onProductClick(product) }
+//                    )
+//                }
+//            }
+
         }
     }
 }
@@ -137,20 +169,22 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Surface(shape = MaterialTheme.shapes.medium) {
+            ImageSlider(product.image)
+        }
+
+        Column(modifier = Modifier.padding(10.dp)) {
 //            Surface(
 //                modifier = Modifier
 //                    .fillMaxWidth()
 //                    .height(100.dp),
 //                color = Color.LightGray,
 //            ) {}
-            ImageSlider(images)
 
-
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(product.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-            Text(product.description, color = Color.Gray)
+            Text(product.description, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
         }
     }
 }

@@ -13,9 +13,7 @@ import com.example.appmodulo_a1.Navigation.NavigationController
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private val navigationController: NavigationController by viewModels()
-
-//    private val navigationController = NavigationController()
+    private val navigationController = NavigationController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
