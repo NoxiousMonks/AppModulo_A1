@@ -45,7 +45,11 @@ fun RegisterScreen(
                 IconButton(onClick = onBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
                 }
-            })
+            },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
+            )
         }) { padding ->
         Column(
             modifier = Modifier
@@ -117,7 +121,10 @@ fun RegisterScreen(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.small,
-                    contentPadding = PaddingValues(vertical = 16.dp)
+                    contentPadding = PaddingValues(vertical = 16.dp),
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = Color(0xFF6149FF)
+//                    )
                 ) {
                     Text("Создать аккаунт")
                 }

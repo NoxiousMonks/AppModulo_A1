@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.appmodulo_a1.EmailValidator
 import com.example.appmodulo_a1.User
 import kotlin.math.log
@@ -33,11 +34,16 @@ fun LoginScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Авторизация", style = MaterialTheme.typography.headlineSmall,
+                        "Авторизация",
                         modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
                     )
                 },
+                modifier = Modifier.background(Color.White),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
             )
         }
     ) { padding ->
@@ -95,24 +101,10 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//                    Checkbox(checked = passwordVisible, onCheckedChange = { passwordVisible = it })
-//                    Text("Показать пароль")
-//
-//                }
-
-
 
             }
         }
 
-        //Сактау тексеру
-//        Text("Saved: ${data.email} ${data.password}")
-//        Text("Input: $email $password")
-
-
-
-//        Spacer(modifier = Modifier.height(32.dp))
 
 
         Column(modifier = Modifier.padding(horizontal = 16.dp)){
@@ -121,11 +113,6 @@ fun LoginScreen(
                 Text("Заполните все поля", color = Color.Red)
             }
 
-//            if (errorTextVisibility) {
-//                Text("Заполните все поля", color = Color.Red)
-//            } else if (errorEmail) {
-//                Text("Введите корректную почту")
-//            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -139,7 +126,10 @@ fun LoginScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small,
-                contentPadding = PaddingValues(vertical = 16.dp)
+                contentPadding = PaddingValues(vertical = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6149FF)
+                )
             ) {
                 Text("Войти")
             }
@@ -150,7 +140,10 @@ fun LoginScreen(
                 onClick = onGoToRegister,
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small,
-                contentPadding = PaddingValues(vertical = 16.dp)
+                contentPadding = PaddingValues(vertical = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6149FF)
+                )
             ) {
                 Text("Зарегистрироваться")
             }

@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.appmodulo_a1.ImageSlider
 import com.example.appmodulo_a1.Product
+import com.example.appmodulo_a1.images
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,15 +33,18 @@ fun DetailScreen(
 //                .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(){
+        Box() {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp),
-                color = Color.Gray,
-            ) {}
+                    .height(450.dp),
+            ) {
+                ImageSlider(images)
+            }
 
-            OutlinedIconButton(onClick = onBack, shape = CircleShape,
+            OutlinedIconButton(
+                onClick = onBack,
+                shape = CircleShape,
                 colors = IconButtonDefaults.outlinedIconButtonColors(
                     containerColor = Color.LightGray,
                     contentColor = Color.White
@@ -50,36 +55,54 @@ fun DetailScreen(
             }
         }
 
-        Column(modifier = Modifier.padding(all = 10.dp)){
-            Text(product.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.headlineMedium)
+        Column(modifier = Modifier.padding(horizontal = 10.dp)) {
+            Text(
+                product.name,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium
+            )
 
             Text(
                 product.price,
-                color = Color.Blue
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodyLarge
             )
 
-            Column(modifier = Modifier.padding(12.dp)){
-                Text("Описание:", fontWeight = FontWeight.Medium)
-
-                Spacer(modifier = Modifier.height(6.dp))
-
+            Column(modifier = Modifier.padding(12.dp)) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(12.dp)
                     ) {
-                    Text(
-                        product.description,
-                        modifier = Modifier.padding(12.dp),
-                    )
+                        Text(
+                            "Описание:", fontWeight = FontWeight.Medium,
+                        )
+
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            product.description,
+                        )
+                    }
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f))
 
+        Box(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(paddingValues = PaddingValues(10.dp))
+        ) {
             Button(
                 onClick = onAddToCart,
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.medium,
+//                colors = ButtonDefaults.buttonColors(
+//                    containerColor = Color(0xFF6149FF)
+//                )
             ) {
                 Text("Добавить в корзину")
 

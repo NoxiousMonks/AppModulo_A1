@@ -4,15 +4,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import com.example.app1.models.MainViewModel
 import com.example.appmodulo_a1.Screens.Screens
 
 // Простой контроллер навигации — без ViewModel, просто класс
 import com.example.appmodulo_a1.Product
 import com.example.appmodulo_a1.Screens.CartItem
 
-class NavigationController {
+//class NavigationController: MainViewModel() {
+class NavigationController: ViewModel() {
 
-    private val navStack = mutableStateListOf<Screens>(Screens.LoginScreen)
+//    private val navStack = mutableStateListOf<Screens>(Screens.LoginScreen)
+    private val navStack = mutableStateListOf<Screens>(Screens.CatalogScreen)
 
 
     val currentScreen: Screens
@@ -23,7 +27,6 @@ class NavigationController {
     var selectedProduct by mutableStateOf<Product?>(null)
 
     var cartItems = mutableStateListOf<CartItem>()
-        private set
 
     fun addToCart(product: Product) {
         val productExistence = cartItems.find { it.product.id == product.id }

@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
@@ -20,14 +22,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.Product
+import com.example.appmodulo_a1.sampleProducts
 
 data class CartItem(
     val product: Product,
@@ -52,14 +57,26 @@ fun CartScreen(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
-                        )
+                    )
                 },
                 actions = {
-                    IconButton(onClick = {navCtrl.clearCart()}) {
+                    IconButton(onClick = { navCtrl.clearCart() }) {
                         Icon(Icons.Default.Delete, contentDescription = "Clear cart")
                     }
-                }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { }, enabled = false) {
+                        Icon(
+                            Icons.Default.Clear,
+                            contentDescription = null,
+                            tint = Color.Transparent
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
                 )
+            )
         },
         bottomBar = {
             NavigationBar(
@@ -70,19 +87,33 @@ fun CartScreen(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.CatalogScreen) },
                     label = { Text("Каталог") },
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") }
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
+
                 )
                 NavigationBarItem(
                     selected = true,
                     onClick = { },
                     label = { Text("Корзина") },
-                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") }
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.ProfileScreen) },
                     label = { Text("Профиль") },
-                    icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") }
+                    icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
+
                 )
             }
         }
@@ -94,28 +125,30 @@ fun CartScreen(
                 .padding(padding),
             contentAlignment = Alignment.Center
         ) {
-            if(navCtrl.cartItems.isEmpty()){
+            if (navCtrl.cartItems.isEmpty()) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+//                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
 
                     Text(
                         "В вашей корзине \n" +
                                 "      пока пусто",
-//                    "В вашей корзине",
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineSmall
                     )
-//                Text(
-//                    "пока пусто",
-//                    fontWeight = FontWeight.Bold,
-//                    style = MaterialTheme.typography.headlineMedium
-//                )
 
                     Text("Добавьте товары из каталога", color = Color.Gray)
 
-                    Button(onClick = onGoToCatalog) {
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Button(
+                        onClick = onGoToCatalog,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF6149FF)
+                        ),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
                         Text("Перейти к каталогу")
                     }
                 }
@@ -130,20 +163,22 @@ fun CartScreen(
                     ) {
                         items(navCtrl.cartItems) { item ->
 
-                            Card (
-                                modifier = Modifier.padding(vertical = 6.dp),
+                            Card(
+                                modifier = Modifier.padding(vertical = 6.dp).height(80.dp),
                                 colors = CardDefaults.cardColors(containerColor = Color.White),
                                 elevation = CardDefaults.cardElevation(4.dp)
-                            ){
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(8.dp)
+                                        .padding(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
 
                                     Box(
                                         modifier = Modifier
                                             .size(60.dp)
+                                            .clip(shape = MaterialTheme.shapes.medium)
                                             .background(Color.Gray)
                                     )
 
@@ -151,30 +186,41 @@ fun CartScreen(
 
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(item.product.name)
-                                        Text(item.product.price)
+                                        Text(item.product.price, fontWeight = FontWeight.Bold)
                                     }
 
                                     Row(
-                                        modifier = Modifier.alignByBaseline(),
-                                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                                         verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Button(
+                                            onClick = {
+                                                navCtrl.decreaseQuantity(item.product)
+                                            },
+//                                            modifier = Modifier.offset(x = (-5).dp, y = 0.dp),
+                                            colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3))
                                         ) {
-                                        Button(onClick = {
-                                            navCtrl.decreaseQuantity(item.product)
-                                        },
-                                            colors = ButtonDefaults.buttonColors(Color.LightGray),
-                                            ) {
-                                            Text("-")
+                                            if (item.quantityState > 1){
+                                                Text("-", color = Color.Black, fontSize = 24.sp)
+                                            } else {
+                                                Icon(
+                                                    Icons.Default.Delete,
+                                                    contentDescription = "Delete",
+                                                    tint = Color.Red
+                                                    )
+                                            }
+
                                         }
 
                                         Text("${item.quantityState}шт")
 
-                                        Button(onClick = {
-                                            navCtrl.increaseQuantity(item.product)
-                                        },
-                                            colors = ButtonDefaults.buttonColors(Color.LightGray)
-                                            ) {
-                                            Text("+", color = Color.Magenta)
+                                        Button(
+                                            onClick = {
+                                                navCtrl.increaseQuantity(item.product)
+                                            },
+                                            colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3)),
+                                        ) {
+                                            Text("+", color = MaterialTheme.colorScheme.primary, fontSize = 24.sp)
                                         }
 
 
@@ -185,33 +231,39 @@ fun CartScreen(
                         }
                     }
 
-                    Card(
-                        modifier = Modifier.height(100.dp).fillMaxWidth(),
-                        shape = RectangleShape,
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        elevation = CardDefaults.cardElevation(4.dp)
-                    ){
+                    Box(
+                        modifier = Modifier
+                            .height(70.dp)
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
-                        ){
-                            Column(modifier = Modifier.padding(10.dp)){
+                        ) {
+                            Column(modifier = Modifier.padding(10.dp)) {
                                 Text("Вся сумма", color = Color.Gray)
-                                Text("${navCtrl.getTotalPrice()} ₸", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.headlineSmall)
+                                Text(
+                                    "${navCtrl.getTotalPrice()} ₸",
+                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
                             }
 
                             Spacer(modifier = Modifier.weight(1f))
 
                             Button(
+                                modifier = Modifier.width(200.dp),
                                 onClick = { },
                                 shape = MaterialTheme.shapes.medium,
-                                contentPadding = PaddingValues(16.dp)
+                                contentPadding = PaddingValues(14.dp)
 //                                modifier = Modifier.width(50.dp)
                             ) {
                                 Text("Оформить заказ")
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(2.dp))
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
@@ -40,7 +41,19 @@ fun ProfileScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
                     }
-                }
+                },
+                actions = {
+                    IconButton(onClick = {  }, enabled = false) {
+                        Icon(
+                            Icons.Default.Clear,
+                            contentDescription = null,
+                            tint = Color.Transparent
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
             )
         },
         bottomBar = {
@@ -52,19 +65,32 @@ fun ProfileScreen(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.CatalogScreen) },
                     label = { Text("Каталог") },
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") }
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Каталог") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { navCtrl.navigateTo(Screens.CartScreen) },
                     label = { Text("Корзина") },
-                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") }
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
                 )
                 NavigationBarItem(
                     selected = true,
                     onClick = { },
                     label = { Text("Профиль") },
-                    icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") }
+                    icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Профиль") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0xFF6149FF),
+                        selectedTextColor = Color(0xFF6149FF)
+                    )
+
                 )
             }
         }
