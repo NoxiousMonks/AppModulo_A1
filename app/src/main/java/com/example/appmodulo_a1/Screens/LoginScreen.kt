@@ -67,33 +67,33 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .background(Color.White)
             ) {
-                Column(modifier = Modifier.height(170.dp)) {
-                    OutlinedTextField(
+                Column(modifier = Modifier.height(150.dp).padding(horizontal = 20.dp)) {
+                    TextField(
                         value = email,
                         onValueChange = { newEmail ->
                             email = newEmail
-
-                            // почта тексеру
-//                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
                         },
                         label = { Text("Почта") },
-                        modifier = Modifier.fillMaxWidth(),
-
-                        isError = errorEmail,
-
-//                    supportingText = {
-//                        if (errorEmail) {
-//                            Text("Введите корректную почту")
-//                        }
-//                    }
+                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            unfocusedLabelColor = Color.LightGray
+                        )
                     )
 
-                    OutlinedTextField(
+                    TextField(
                         value = password,
                         onValueChange = { password = it },
                         label = { Text("Пароль") },
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            unfocusedLabelColor = Color.LightGray
+
+                        )
                     )
 
                     if (email.isEmpty() && password.isEmpty()) {

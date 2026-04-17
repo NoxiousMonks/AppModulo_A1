@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -47,18 +48,24 @@ fun RegisterScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(
+            TopAppBar(
+                title = { Text(
                 "Регистрация",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             ) }, navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
+                    Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "Назад")
                 }
             },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White
-                )
+                ),
+                actions = {
+                    IconButton(onClick = {  }, colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White), enabled = false ) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
+                    }
+                }
             )
         }) { padding ->
         Column(
@@ -66,25 +73,31 @@ fun RegisterScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .background(Color(0xFFF3F3F3)),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+//            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
+                    .padding(horizontal = 20.dp)
             ) {
-                OutlinedTextField(
+                TextField(
                     value = login,
                     onValueChange = { login = it },
                     label = { Text("Логин") },
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth().height(60.dp)
                         .border(width = 1.dp, color = Color.Transparent),
-//                    colors = TextFieldDefaults.colors()
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        unfocusedLabelColor = Color.LightGray
+                    )
                 )
 
-                OutlinedTextField(
+                TextField(
                     value = email,
                     onValueChange = { newEmail ->
                         email = newEmail
@@ -93,23 +106,27 @@ fun RegisterScreen(
 //                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
                     },
                     label = { Text("Почта") },
-                    modifier = Modifier.fillMaxWidth(),
-
-//                    isError = errorEmail,
-//                    supportingText = {
-//                        if (errorEmail) {
-//                            Text("Введите корректную почту")
-//                        }
-//                    }
+                    modifier = Modifier.fillMaxWidth().height(60.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        unfocusedLabelColor = Color.LightGray
+                    )
                 )
 
-                Box(contentAlignment = Alignment.BottomEnd){
-                    OutlinedTextField(
+                Box(contentAlignment = Alignment.CenterEnd){
+                    TextField(
                         value = password,
                         onValueChange = { password = it },
                         label = { Text("Пароль") },
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            unfocusedLabelColor = Color.LightGray
+
+                        )
                     )
 
 

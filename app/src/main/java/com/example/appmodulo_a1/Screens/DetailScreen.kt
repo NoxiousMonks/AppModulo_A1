@@ -1,8 +1,11 @@
 package com.example.appmodulo_a1.Screens
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -11,20 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.appmodulo_a1.ui.theme.ImageSlider
+import com.example.app1.models.MainViewModel
+import com.example.appmodulo_a1.CartItem
+import com.example.appmodulo_a1.ImageSlider
 import com.example.appmodulo_a1.Product
 //import com.example.appmodulo_a1.images
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     product: Product,
     onAddToCart: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: MainViewModel
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize().verticalScroll(state = rememberScrollState())
             .background(Color(0xFFF2F1EF))
             .padding(),
 //                .padding(16.dp),
@@ -101,7 +106,15 @@ fun DetailScreen(
 //                    containerColor = Color(0xFF6149FF)
 //                )
             ) {
-                Text("Добавить в корзину")
+
+                val productExists = viewModel.cartItems.find { it.product.id == product.id }
+
+                if (productExists != null) {
+                    Text("В корзине")
+                } else {
+                    Text("Добавить в корзину")
+                }
+
 
             }
         }

@@ -52,9 +52,11 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
             product = viewModel.selectedProduct!!,
             onAddToCart = {
                 viewModel.addToCart(viewModel.selectedProduct!!)
-                navCtrl.navigateTo(Screens.CartScreen)
+
+                navCtrl.navigateTo(Screens.CatalogScreen)
             },
-            onBack = { navCtrl.navigateBack() }
+            onBack = { navCtrl.navigateBack() },
+            viewModel = viewModel
         )
 
 

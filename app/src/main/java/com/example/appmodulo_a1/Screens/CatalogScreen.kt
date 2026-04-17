@@ -8,31 +8,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.appmodulo_a1.ui.theme.ImageSlider
+import com.example.appmodulo_a1.ImageSlider
 import com.example.appmodulo_a1.Navigation.NavigationController
 import com.example.appmodulo_a1.Product
 import com.example.appmodulo_a1.R
 //import com.example.appmodulo_a1.images
-import com.example.appmodulo_a1.images1
-import com.example.appmodulo_a1.images2
 import com.example.appmodulo_a1.sampleProducts
-import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,7 +94,7 @@ fun CatalogScreen(
                 value = searching,
                 onValueChange = { searching = it },
                 label = { Text("Поиск") },
-                modifier = Modifier
+                modifier = Modifier.height(60.dp)
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
                 shape = MaterialTheme.shapes.large,

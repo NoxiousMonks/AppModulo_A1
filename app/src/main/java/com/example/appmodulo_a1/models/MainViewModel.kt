@@ -13,21 +13,32 @@ import com.example.appmodulo_a1.CartItem
 import com.example.appmodulo_a1.Product
 import kotlinx.coroutines.launch
 import com.example.appmodulo_a1.User
+import com.example.appmodulo_a1.sampleProducts
+import com.example.appmodulo_a1.util.loadCardItems
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.example.appmodulo_a1.util.saveCardItems
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val PREFS_NAME = "user_prefs"
     private val KEY_DATA = "user_data"
 
-    private val sharedPreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val KEY_CART_DATA = "cart_data"
+
+    private val sharedPreferences =
+        application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    // --------------------- Card Data --------------------------------------------------------------------------------
+
+
+    // --------------------- Card Data --------------------------------------------------------------------------------
     private val gson = Gson()
 
     var userData by mutableStateOf(User())
 
-    fun login(email:String, pass:String): Boolean {
+    fun login(email: String, pass: String): Boolean {
         return email.contentEquals(userData.email) && pass.contentEquals(userData.password)
     }
 
@@ -63,10 +74,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
+    //Korzina
     var selectedProduct by mutableStateOf<Product?>(null)
 
     var cartItems = mutableStateListOf<CartItem>()
+
+    init{
+        val listIdCount = sharedPreferences.loadCardItems(KEY_CART_DATA)
+
+        sampleProducts.forEach{ product: Product ->
+            listIdCount?.forEach { pairIdCount: Pair<Int, Int> ->
+                if(product.id == pairIdCount.first) cartItems.add(CartItem(product,pairIdCount.second ))
+            }
+        }
+
+    }
+
 
     fun addToCart(product: Product) {
         val productExistence = cartItems.find { it.product.id == product.id }
@@ -76,10 +99,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             cartItems.add(CartItem(product))
         }
+
+        sharedPreferences.saveCardItems(cartItems, KEY_CART_DATA)
+
     }
 
     fun increaseQuantity(product: Product) {
         cartItems.find { it.product.id == product.id }?.quantityState++
+
+        sharedPreferences.saveCardItems(cartItems, KEY_CART_DATA)
     }
 
     fun decreaseQuantity(product: Product) {
@@ -88,36 +116,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (item != null) {
             if (item.quantityState > 1) {
                 item.quantityState--
+
             } else {
                 cartItems.remove(item)
             }
         }
+
+        sharedPreferences.saveCardItems(cartItems, KEY_CART_DATA)
     }
 
     fun clearCart() {
         cartItems.clear()
     }
 
-//    fun getTotalPrice(): Int {
-//        return cartItems.sumOf {
-//            val price = it.product.price
-//                .replace("₸", "")
-//                .replace(" ", "")
-//                .toInt()
-//
-//            price * it.quantity
-//        }
-//    }
-
     val totalPrice = derivedStateOf {
         cartItems.sumOf {
-            val price = it.product.price
-                .replace("₸", "")
-                .replace(" ", "")
-                .toInt()
+            val price = it.product.price.replace("₸", "").replace(" ", "").toInt()
 
             price * it.quantityState
         }
     }
+
+    //    private val CARTS_NAME = "cart_prefs"
+
+
+    data class CartItemIn(val id: Int, val count: Int)
+
 
 }

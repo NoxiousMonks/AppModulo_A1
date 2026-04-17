@@ -1,5 +1,7 @@
 package com.example.appmodulo_a1
 
+import java.util.UUID
+
 data class Product(
     val id: Int,
     val name: String,

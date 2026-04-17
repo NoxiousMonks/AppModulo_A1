@@ -117,10 +117,11 @@ fun ProfileScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
                     .background(Color.White),
                 contentAlignment = Alignment.CenterStart
             ) {
+                Spacer(modifier = Modifier.width(10.dp))
+
                 TextButton(onClick = onLogout) {
                     Text("Выйти", color = Color.Red)
                 }

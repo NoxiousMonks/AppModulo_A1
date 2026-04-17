@@ -1,4 +1,4 @@
-package com.example.appmodulo_a1.ui.theme
+package com.example.appmodulo_a1
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -6,8 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -37,7 +37,7 @@ fun ImageSlider(images: List<Int>) {
                 painter = painterResource(id = images[page]),
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
 //                    .heightIn(max = 200.dp),
 //                    .heightIn(min = 200.dp, max = 200.dp)
                     ,
