@@ -38,8 +38,9 @@ fun ImageSlider(images: List<Int>) {
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 200.dp),
-//                    .heightIn(min = 200.dp, max = 200.dp),
+//                    .heightIn(max = 200.dp),
+//                    .heightIn(min = 200.dp, max = 200.dp)
+                    ,
                 contentScale = ContentScale.Crop
             )
         }

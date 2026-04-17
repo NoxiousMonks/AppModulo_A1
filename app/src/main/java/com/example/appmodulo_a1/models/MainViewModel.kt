@@ -2,11 +2,15 @@ package com.example.app1.models
 
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.appmodulo_a1.CartItem
+import com.example.appmodulo_a1.Product
 import kotlinx.coroutines.launch
 import com.example.appmodulo_a1.User
 import com.google.gson.Gson
@@ -58,4 +62,62 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             sharedPreferences.edit().putString(KEY_DATA, json).apply()
         }
     }
+
+
+    var selectedProduct by mutableStateOf<Product?>(null)
+
+    var cartItems = mutableStateListOf<CartItem>()
+
+    fun addToCart(product: Product) {
+        val productExistence = cartItems.find { it.product.id == product.id }
+
+        if (productExistence != null) {
+            productExistence.quantityState++
+        } else {
+            cartItems.add(CartItem(product))
+        }
+    }
+
+    fun increaseQuantity(product: Product) {
+        cartItems.find { it.product.id == product.id }?.quantityState++
+    }
+
+    fun decreaseQuantity(product: Product) {
+        val item = cartItems.find { it.product.id == product.id }
+
+        if (item != null) {
+            if (item.quantityState > 1) {
+                item.quantityState--
+            } else {
+                cartItems.remove(item)
+            }
+        }
+    }
+
+    fun clearCart() {
+        cartItems.clear()
+    }
+
+//    fun getTotalPrice(): Int {
+//        return cartItems.sumOf {
+//            val price = it.product.price
+//                .replace("₸", "")
+//                .replace(" ", "")
+//                .toInt()
+//
+//            price * it.quantity
+//        }
+//    }
+
+    val totalPrice = derivedStateOf {
+        cartItems.sumOf {
+            val price = it.product.price
+                .replace("₸", "")
+                .replace(" ", "")
+                .toInt()
+
+            price * it.quantityState
+        }
+    }
+
 }

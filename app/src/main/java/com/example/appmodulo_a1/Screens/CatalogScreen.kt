@@ -55,8 +55,8 @@ fun CatalogScreen(
                     onClick = {},
                     label = { Text("Каталог") },
                     icon = {
-//                        Image(painter = painterResource(R.drawable.icon_catalogue), contentDescription = "Каталог") ,
-                           Icon(painter = painterResource(R.drawable.icon_catalogue), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Image(painter = painterResource(R.drawable.icon_catalogue), contentDescription = "Каталог")
+//                           Icon(painter = painterResource(R.drawable.icon_catalogue), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                            },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -119,31 +119,12 @@ fun CatalogScreen(
 //                    Spacer(modifier = Modifier.height(12.dp))
 //            }
 
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize()
-                    .padding(horizontal = 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalItemSpacing = 12.dp
-            ) {
-                items(
-                    items = sampleProducts,
-                    key = { it.id }
-                ) { product ->
-                    ProductCard(
-                        product,
-                        onClick = { onProductClick(product) }
-                    )
-                }
-            }
-
-//            LazyVerticalGrid(
-//                columns = GridCells.Fixed(2),
+//            LazyVerticalStaggeredGrid(
+//                columns = StaggeredGridCells.Fixed(2),
 //                modifier = Modifier.fillMaxSize()
 //                    .padding(horizontal = 10.dp),
 //                horizontalArrangement = Arrangement.spacedBy(12.dp),
-//                verticalArrangement = Arrangement.spacedBy(12.dp)
-////                verticalItemSpacing = 12.dp
+//                verticalItemSpacing = 12.dp
 //            ) {
 //                items(
 //                    items = sampleProducts,
@@ -155,6 +136,25 @@ fun CatalogScreen(
 //                    )
 //                }
 //            }
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize()
+                    .padding(horizontal = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+//                verticalItemSpacing = 12.dp
+            ) {
+                items(
+                    items = sampleProducts,
+                    key = { it.id }
+                ) { product ->
+                    ProductCard(
+                        product,
+                        onClick = { onProductClick(product) }
+                    )
+                }
+            }
 
         }
     }
@@ -169,7 +169,10 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Surface(shape = MaterialTheme.shapes.medium) {
+        Surface(
+            modifier = Modifier .heightIn(min = 200.dp, max = 200.dp),
+            shape = MaterialTheme.shapes.medium
+        ) {
             ImageSlider(product.image)
         }
 
@@ -181,7 +184,7 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
 //                color = Color.LightGray,
 //            ) {}
 
-            Spacer(modifier = Modifier.height(4.dp))
+//            Spacer(modifier = Modifier.height(4.dp))
 
             Text(product.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(product.description, color = Color.Gray, style = MaterialTheme.typography.bodySmall)

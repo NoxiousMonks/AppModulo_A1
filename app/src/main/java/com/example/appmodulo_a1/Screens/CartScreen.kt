@@ -1,7 +1,7 @@
 package com.example.appmodulo_a1.Screens
 
-import android.R
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,44 +9,31 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.app1.models.MainViewModel
 import com.example.appmodulo_a1.Navigation.NavigationController
-import com.example.appmodulo_a1.Product
-import com.example.appmodulo_a1.sampleProducts
-
-data class CartItem(
-    val product: Product,
-    var quantity: Int = 1
-) {
-    var quantityState by mutableStateOf(quantity)
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
     onGoToCatalog: () -> Unit,
     onBack: () -> Unit,
-    navCtrl: NavigationController
+    navCtrl: NavigationController,
+    viewModel: MainViewModel
 ) {
     Scaffold(
         topBar = {
@@ -60,7 +47,7 @@ fun CartScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { navCtrl.clearCart() }) {
+                    IconButton(onClick = { viewModel.clearCart() } ) {
                         Icon(Icons.Default.Delete, contentDescription = "Clear cart")
                     }
                 },
@@ -126,7 +113,7 @@ fun CartScreen(
                 .padding(padding),
             contentAlignment = Alignment.Center
         ) {
-            if (navCtrl.cartItems.isEmpty()) {
+            if (viewModel.cartItems.isEmpty()) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
 //                    verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -161,7 +148,7 @@ fun CartScreen(
                             .padding(16.dp)
 
                     ) {
-                        items(navCtrl.cartItems) { item ->
+                        items(viewModel.cartItems) { item ->
 
                             Card(
                                 modifier = Modifier.padding(vertical = 6.dp).height(80.dp),
@@ -193,37 +180,41 @@ fun CartScreen(
                                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
+
 //                                        bOX CLICKABLE
-                                        Button(
-                                            onClick = {
-                                                navCtrl.decreaseQuantity(item.product)
-                                            },
-//                                            modifier = Modifier.offset(x = (-5).dp, y = 0.dp),
-                                            colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3))
-                                        ) {
+                                        Box(modifier = Modifier
+                                            .clickable(onClick = {
+                                                viewModel.decreaseQuantity(item.product)
+                                            })
+                                            .size(32.dp)
+                                            .clip(shape = CircleShape)
+                                            .background(Color(0xFFF3F3F3)),
+                                            contentAlignment = Alignment.Center
+                                        ){
                                             if (item.quantityState > 1){
                                                 Text("-", color = Color.Black, fontSize = 24.sp)
                                             } else {
                                                 Icon(
-                                                    Icons.Default.Delete,
+                                                    Icons.Filled.DeleteOutline,
                                                     contentDescription = "Delete",
                                                     tint = Color.Red
                                                     )
                                             }
-
                                         }
 
                                         Text("${item.quantityState}шт")
 
-                                        Button(
-                                            onClick = {
-                                                navCtrl.increaseQuantity(item.product)
-                                            },
-                                            colors = ButtonDefaults.buttonColors(Color(0xFFF3F3F3)),
-                                        ) {
+                                        Box(modifier = Modifier
+                                            .clickable(onClick = {
+                                                viewModel.increaseQuantity(item.product)
+                                            })
+                                            .size(32.dp)
+                                            .clip(shape = CircleShape)
+                                            .background(Color(0xFFF3F3F3)),
+                                            contentAlignment = Alignment.Center
+                                        ){
                                             Text("+", color = MaterialTheme.colorScheme.primary, fontSize = 24.sp)
                                         }
-
 
                                     }
                                 }
@@ -238,6 +229,7 @@ fun CartScreen(
                             .fillMaxWidth()
                             .background(Color.White)
                     ) {
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
@@ -245,9 +237,10 @@ fun CartScreen(
                             Column(modifier = Modifier.padding(10.dp)) {
                                 Text("Вся сумма", color = Color.Gray)
                                 Text(
-                                    "${navCtrl.getTotalPrice()} ₸",
+//                                    "${navCtrl.getTotalPrice()} ₸",
+                                    "${viewModel.totalPrice.value} ₸",
                                     fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.headlineSmall
+                                    style = MaterialTheme.typography.titleLarge
                                 )
                             }
 

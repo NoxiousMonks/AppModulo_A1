@@ -1,6 +1,7 @@
 package com.example.appmodulo_a1.Screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.appmodulo_a1.Navigation.NavigationController
@@ -36,20 +38,6 @@ fun ProfileScreen(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {  }, enabled = false) {
-                        Icon(
-                            Icons.Default.Clear,
-                            contentDescription = null,
-                            tint = Color.Transparent
-                        )
-                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White
@@ -100,35 +88,36 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF2F1EF))
+                .background(Color(0xFFF3F3F3))
                 .padding(padding)
 //                .padding(24.dp)
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+//            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
 
             Icon(
-                Icons.Default.AccountCircle, contentDescription = "profile",
+                Icons.Filled.AccountCircle, contentDescription = "profile",
                 modifier = Modifier.size(100.dp)
             )
 
 
-            Text(user.login, style = MaterialTheme.typography.headlineSmall)
+            Text(user.login, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
 
             Text(
                 user.email,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 color = Color.Gray
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
                     .background(Color.White),
                 contentAlignment = Alignment.CenterStart
             ) {

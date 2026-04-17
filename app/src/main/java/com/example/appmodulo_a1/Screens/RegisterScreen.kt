@@ -90,7 +90,7 @@ fun RegisterScreen(
                         email = newEmail
 
                         // почта тексеру
-                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
+//                        errorEmail = newEmail.isNotEmpty() && !EmailValidator.isValidEmail(newEmail)
                     },
                     label = { Text("Почта") },
                     modifier = Modifier.fillMaxWidth(),

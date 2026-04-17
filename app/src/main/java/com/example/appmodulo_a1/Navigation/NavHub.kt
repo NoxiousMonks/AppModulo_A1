@@ -12,13 +12,11 @@ import com.example.appmodulo_a1.Screens.RegisterScreen
 
 @Composable
 fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
-//    val nav = remember { NavigationController() }
     val screen: Screens = navCtrl.currentScreen
 
     when (screen) {
 
         Screens.LoginScreen -> LoginScreen(
-//            data = viewModel.userData,
             navigateToLogin = {
                 navCtrl.navigateTo(Screens.CatalogScreen)
             },
@@ -31,10 +29,8 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
         )
 
         Screens.RegisterScreen -> RegisterScreen(
-//            initialData = viewModel.userData,
             onRegister = { newUser ->
                 viewModel.saveData(newUser)
-//                viewModel.userData = newUser
                 navCtrl.navigateTo(Screens.CatalogScreen)
             },
             onBack = {
@@ -44,7 +40,7 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
 
         Screens.CatalogScreen -> CatalogScreen(
             onProductClick = { product ->
-                navCtrl.selectedProduct = product
+                viewModel.selectedProduct = product
                 navCtrl.navigateTo(Screens.DetailScreen)
             },
             onGoCart = { navCtrl.navigateTo(Screens.CartScreen) },
@@ -53,9 +49,9 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
         )
 
         Screens.DetailScreen -> DetailScreen(
-            product = navCtrl.selectedProduct!!,
+            product = viewModel.selectedProduct!!,
             onAddToCart = {
-                navCtrl.addToCart(navCtrl.selectedProduct!!)
+                viewModel.addToCart(viewModel.selectedProduct!!)
                 navCtrl.navigateTo(Screens.CartScreen)
             },
             onBack = { navCtrl.navigateBack() }
@@ -69,6 +65,7 @@ fun NavHub(viewModel: MainViewModel,  navCtrl: NavigationController) {
             onBack = {
                 navCtrl.navigateBack()
             },
+            viewModel = viewModel,
             navCtrl = navCtrl
         )
 
